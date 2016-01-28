@@ -5,11 +5,11 @@ TrafficLight::TrafficLight(sc_module_name name)
 {
     light.initialize(false);
     request.initialize(false);
-    
+
     SC_METHOD(sensor_method);
     dont_initialize();
     sensitive << sensor << light;
-    
+
     SC_METHOD(on_off_method);
     dont_initialize();
     sensitive << ack;
@@ -21,7 +21,7 @@ void TrafficLight::sensor_method()
 {
     bool cars_in_queue = sensor->read();
     bool traffic_light = light->read();
-    
+
     if (traffic_light) {
         unhandled_vehicle = false;
     }
@@ -31,7 +31,7 @@ void TrafficLight::sensor_method()
     }
     
     request->write(unhandled_vehicle);
-    
+
 }
 
 
@@ -41,6 +41,6 @@ void TrafficLight::on_off_method()
 {
     bool ack_in = ack->read();
     bool light_out = ack_in && unhandled_vehicle;
-    
+
     light->write(light_out);
 }

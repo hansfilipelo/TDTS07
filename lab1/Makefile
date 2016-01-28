@@ -2,7 +2,7 @@
 PROGRAM = traffic.x
 
 # The source files (*.cc)
-SRCS = TrafficLight.cc
+SRCS = TrafficLight.cc Controller.cc
 
 ##################################
 ## DO NOT CHANGE ANYTHING BELOW ##
