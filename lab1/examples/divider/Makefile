@@ -8,11 +8,10 @@ SRCS = divider.cc input_gen.cc monitor.cc divider_testbench.cc
 ## DO NOT CHANGE ANYTHING BELOW ##
 ##################################
 
-SYSTEMC = /home/TDTS07/sw/systemc
-TARGET_ARCH = linux64
+SYSTEMC = /usr/local/Cellar/systemc/2.3.1/
 
-LIBDIR = -L. -L.. -L$(SYSTEMC)/lib-$(TARGET_ARCH)
-LIBS = -Wl,-Bstatic -lsystemc -Wl,-Bdynamic -lm -lpthread
+LIBDIR = -L. -L.. -L$(SYSTEMC)/lib
+LIBS = -Wl -Bstatic -lsystemc -Wl -Bdynamic -lm -lpthread
 LDFLAGS = -g
 
 CC = g++
