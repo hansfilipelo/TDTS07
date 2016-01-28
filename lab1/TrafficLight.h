@@ -6,7 +6,6 @@
 SC_MODULE(TrafficLight) {
   sc_in<bool> sensor;
   sc_in<bool> ack;
-  sc_in<bool> clock;
 
   sc_inout<bool> light;
   sc_out<bool> request;
