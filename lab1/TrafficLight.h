@@ -18,7 +18,6 @@ SC_MODULE(TrafficLight) {
 
   // Member functions
   void sensor_method();
-  void request_method();
   void on_off_method();
 };
 

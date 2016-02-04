@@ -29,7 +29,7 @@ void TrafficLight::sensor_method()
     {
         unhandled_vehicle = cars_in_queue;
     }
-    
+
     request->write(unhandled_vehicle);
 
 }
