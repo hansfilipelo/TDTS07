@@ -40,5 +40,13 @@ TRAFF_EXE=TL_testbench
 $(TRAFF_EXE): $(TRAFF_OBJS)
 	$(CC) $(LDFLAGS) $(INCDIR) $(LIBDIR) -o $(TRAFF_EXE) $(TRAFF_OBJS) $(LIBS)
 
+CONTR_FOLDER=Controller_testbench
+CONTR_SRCS=$(CONTR_FOLDER)/Controller_testbench.cc $(CONTR_FOLDER)/monitor.cc Controller.cc $(CONTR_FOLDER)/input_gen.cc
+CONTR_OBJS = $(CONTR_SRCS:.cc=.o)
+CONTR_EXE=C_testbench
+
+$(CONTR_EXE): $(CONTR_OBJS)
+	$(CC) $(LDFLAGS) $(INCDIR) $(LIBDIR) -o $(CONTR_EXE) $(CONTR_OBJS) $(LIBS)
+
 clean:
-	rm -f *.o $(TRAFF_FOLDER)/*.o $(TRAFF_EXE) $(EXE) *~
+	rm -f *.o $(TRAFF_FOLDER)/*.o $(TRAFF_EXE) $(CONTR_FOLDER)/*.o $(CONTR_EXE) $(EXE) *~

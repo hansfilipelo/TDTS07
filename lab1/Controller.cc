@@ -5,23 +5,18 @@ Controller::Controller(sc_module_name name)
 {
   current_direction = 0;
 
-  for(int i = 0; i < NR_OF_DIRECTIONS; i++)
-  {
-    ack[i].initialize(false);
-  }
+  ack_NS.initialize(false);
+  ack_WE.initialize(false);
 
   SC_METHOD(request_method);
   dont_initialize();
-  for (int i = 0; i < NR_OF_DIRECTIONS ; i++) {
-    sensitive << request[i][0];
-    sensitive << request[i][1];
-  }
+  sensitive << request_NS << request_SN << request_WE << request_EW;
 
   SC_METHOD(timeout_method)
   dont_initialize();
   sensitive << timeout_event;
 
-  SC_METHOD(timeout_method)
+  SC_METHOD(ack_method)
   dont_initialize();
   sensitive << ack_event;
 }
@@ -32,15 +27,20 @@ void Controller::request_method()
 {
   if (!is_acked)
   {
-    for (size_t i = 0; i < NR_OF_DIRECTIONS; i++)
+
+    if (request_NS.read() || request_SN.read())
     {
-      if (request[i][0] == true || request[i][1] == true)
-      {
-        current_direction = i;
-        is_acked = true;
-        ack_event.notify();
-      }
+      current_direction = 0;
+      is_acked = true;
+      ack_event.notify();
     }
+    else if (request_WE.read() || request_EW.read())
+    {
+      current_direction = 1;
+      is_acked = true;
+      ack_event.notify();
+    }
+
   }
 }
 
@@ -48,26 +48,48 @@ void Controller::request_method()
 
 void Controller::timeout_method()
 {
-  int temp_dir = current_direction + 1 % NR_OF_DIRECTIONS;
-
-  for (size_t i = 0; i < NR_OF_DIRECTIONS; i++) {
-    if (request[temp_dir][0] == true || request[temp_dir][1] == 1) {
-      if (current_direction != temp_dir) {
-        ack[current_direction].write(false);
-        current_direction = temp_dir;
-      }
+  if (current_direction == 0)
+  {
+    if(request_WE.read() || request_EW.read())
+    {
+      ack_NS.write(false);
+      ack_WE.write(true);
+      current_direction = 1;
       ack_event.notify();
-      return;
+    }
+    else if(request_NS.read() || request_SN.read())
+    {
+      ack_event.notify();
+    }
+    else
+    {
+      is_acked = false;
     }
   }
+  else if (current_direction == 1)
+  {
+    if(request_NS.read() || request_SN.read())
+    {
+      ack_WE.write(false);
+      ack_NS.write(true);
+      current_direction = 0;
+      ack_event.notify();
+    }
+    else if(request_WE.read() || request_EW.read())
+    {
+      ack_event.notify();
+    }
+    else
+    {
+      is_acked = false;
+    }
 
-  is_acked = false;
+  }
 }
 
 // -----------------
 
 void Controller::ack_method()
 {
-  ack[current_direction].write(true);
   timeout_event.notify(20,SC_SEC);
 }
