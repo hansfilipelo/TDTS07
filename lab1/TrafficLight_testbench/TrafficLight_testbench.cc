@@ -1,6 +1,6 @@
 #include <cassert>
 #include <systemc.h>
-#include "TrafficLight.h"
+#include "../TrafficLight.h"
 #include "monitor.h"
 #include "input_gen.h"
 

@@ -31,12 +31,14 @@ $(EXE): $(OBJS)
 ###############
 #### TESTS ####
 
-TRAFF_SRCS=TrafficLight_testbench.cc monitor.cc TrafficLight.cc input_gen.cc
+
+TRAFF_FOLDER=TrafficLight_testbench
+TRAFF_SRCS=$(TRAFF_FOLDER)/TrafficLight_testbench.cc $(TRAFF_FOLDER)/monitor.cc TrafficLight.cc $(TRAFF_FOLDER)/input_gen.cc
 TRAFF_OBJS = $(TRAFF_SRCS:.cc=.o)
-TRAFF_EXE=TrafficLight_testbench
+TRAFF_EXE=TL_testbench
 
 $(TRAFF_EXE): $(TRAFF_OBJS)
 	$(CC) $(LDFLAGS) $(INCDIR) $(LIBDIR) -o $(TRAFF_EXE) $(TRAFF_OBJS) $(LIBS)
 
 clean:
-	rm -f $(OBJS) $(TRAFF_OBJS) $(EXE) *~
+	rm -f *.o $(TRAFF_FOLDER)/*.o $(TRAFF_EXE) $(EXE) *~
