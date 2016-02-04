@@ -28,27 +28,15 @@ OBJS = $(SRCS:.cc=.o)
 $(EXE): $(OBJS)
 	$(CC) $(LDFLAGS) $(INCDIR) $(LIBDIR) -o $(EXE) $(OBJS) $(LIBS)
 
-# To build the whole project we must compile each .cc file into a .o file, and
-# then link all .o-files into an executable. The rule above tells the make tool
-# how to link the object files into an executable. To create the object files we
-# need additional rules (one for each .cc-file). For each .cc-file we add two
-# lines in the make file. The first line consists of a list of one .cc file
-# (corresponding to the .o-file beeing created) and possibly a list of .h-files.
-# Whenever any of the files in the list has changed, the make tool will
-# recompile the object file. The list should be the .cc-file beeing compiled,
-# and all the .h-files that are included in that .cc-file.
+###############
+#### TESTS ####
 
-divider_testbench.o: divider_testbench.cc divider.h input_gen.h monitor.h
-	$(CC) -c $(CFLAGS) $(INCDIR) divider_testbench.cc -o divider_testbench.o
+TRAFF_SRCS=TrafficLight_testbench.cc monitor.cc TrafficLight.cc input_gen.cc
+TRAFF_OBJS = $(TRAFF_SRCS:.cc=.o)
+TRAFF_EXE=TrafficLight_testbench
 
-divider.o: divider.cc divider.h
-	$(CC) -c $(CFLAGS) $(INCDIR) divider.cc -o divider.o
-
-input_gen.o: input_gen.cc input_gen.h
-	$(CC) -c $(CFLAGS) $(INCDIR) input_gen.cc -o input_gen.o
-
-monitor.o: monitor.cc monitor.h
-	$(CC) -c $(CFLAGS) $(INCDIR) monitor.cc -o monitor.o
+$(TRAFF_EXE): $(TRAFF_OBJS)
+	$(CC) $(LDFLAGS) $(INCDIR) $(LIBDIR) -o $(TRAFF_EXE) $(TRAFF_OBJS) $(LIBS)
 
 clean:
-	rm -f $(OBJS) $(EXE) *~
+	rm -f $(OBJS) $(TRAFF_OBJS) $(EXE) *~
