@@ -28,7 +28,6 @@ void Controller::request_method()
 {
   if (!is_acked)
   {
-
     if (request_NS.read() || request_SN.read())
     {
       current_direction = 0;
@@ -41,7 +40,6 @@ void Controller::request_method()
       is_acked = true;
       ack_event.notify();
     }
-
   }
 }
 
