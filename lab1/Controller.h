@@ -13,9 +13,8 @@ SC_MODULE(Controller) {
     sc_out<bool> ack_NS;
     sc_out<bool> ack_WE;
 
-    sc_event timeout_event;
+    sc_event timer_event;
     sc_event ack_event;
-    sc_mutex state_lock;
 
     // Members
     int current_direction;
@@ -26,7 +25,7 @@ SC_MODULE(Controller) {
 
     // Member functions
     void ack_method();
-    void timeout_method();
+    void timer_method();
     void request_method();
 };
 

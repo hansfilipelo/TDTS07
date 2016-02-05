@@ -4,6 +4,7 @@ Controller::Controller(sc_module_name name)
 : sc_module(name)
 {
   current_direction = 0;
+  is_acked = false;
 
   ack_NS.initialize(false);
   ack_WE.initialize(false);
@@ -12,9 +13,9 @@ Controller::Controller(sc_module_name name)
   dont_initialize();
   sensitive << request_NS << request_SN << request_WE << request_EW;
 
-  SC_METHOD(timeout_method)
+  SC_METHOD(timer_method)
   dont_initialize();
-  sensitive << timeout_event;
+  sensitive << timer_event;
 
   SC_METHOD(ack_method)
   dont_initialize();
@@ -46,7 +47,7 @@ void Controller::request_method()
 
 // -----------------
 
-void Controller::timeout_method()
+void Controller::ack_method()
 {
   if (current_direction == 0)
   {
@@ -55,14 +56,17 @@ void Controller::timeout_method()
       ack_NS.write(false);
       ack_WE.write(true);
       current_direction = 1;
-      ack_event.notify();
+      timer_event.notify();
     }
     else if(request_NS.read() || request_SN.read())
     {
-      ack_event.notify();
+      timer_event.notify();
     }
     else
     {
+      ack_NS.write(false);
+      ack_WE.write(false);
+      ack_event.cancel();
       is_acked = false;
     }
   }
@@ -73,14 +77,17 @@ void Controller::timeout_method()
       ack_WE.write(false);
       ack_NS.write(true);
       current_direction = 0;
-      ack_event.notify();
+      timer_event.notify();
     }
     else if(request_WE.read() || request_EW.read())
     {
-      ack_event.notify();
+      timer_event.notify();
     }
     else
     {
+      ack_NS.write(false);
+      ack_WE.write(false);
+      ack_event.cancel();
       is_acked = false;
     }
 
@@ -89,7 +96,7 @@ void Controller::timeout_method()
 
 // -----------------
 
-void Controller::ack_method()
+void Controller::timer_method()
 {
-  timeout_event.notify(20,SC_SEC);
+  ack_event.notify(20,SC_SEC);
 }

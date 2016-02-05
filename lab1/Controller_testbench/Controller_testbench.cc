@@ -10,7 +10,7 @@ int sc_main(int argc, char **argv)
   assert(argc == 1);
 
   sc_set_time_resolution(1,SC_SEC);
-  sc_time sim_time(10000, SC_SEC);
+  sc_time sim_time(300, SC_SEC);
 
   // Create channels.
   sc_signal<bool> request_NS_sig;

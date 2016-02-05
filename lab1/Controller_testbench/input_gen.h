@@ -5,10 +5,10 @@
 #include "../Controller.h"
 
 SC_MODULE(Generator) {
-  sc_out<bool> request_NS;
-  sc_out<bool> request_SN;
-  sc_out<bool> request_WE;
-  sc_out<bool> request_EW;
+  sc_inout<bool> request_NS;
+  sc_inout<bool> request_SN;
+  sc_inout<bool> request_WE;
+  sc_inout<bool> request_EW;
 
   SC_HAS_PROCESS(Generator);
   Generator(sc_module_name name);
