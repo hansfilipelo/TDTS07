@@ -32,6 +32,8 @@ $(EXE): $(OBJS)
 #### TESTS ####
 
 
+# TrafficLight_testbench ----------------------
+
 TRAFF_FOLDER=TrafficLight_testbench
 TRAFF_SRCS=$(TRAFF_FOLDER)/TrafficLight_testbench.cc $(TRAFF_FOLDER)/monitor.cc TrafficLight.cc $(TRAFF_FOLDER)/input_gen.cc
 TRAFF_OBJS = $(TRAFF_SRCS:.cc=.o)
@@ -39,6 +41,8 @@ TRAFF_EXE=TL_testbench
 
 $(TRAFF_EXE): $(TRAFF_OBJS)
 	$(CC) $(LDFLAGS) $(INCDIR) $(LIBDIR) -o $(TRAFF_EXE) $(TRAFF_OBJS) $(LIBS)
+
+# Controller_testbench ----------------------
 
 CONTR_FOLDER=Controller_testbench
 CONTR_SRCS=$(CONTR_FOLDER)/Controller_testbench.cc $(CONTR_FOLDER)/monitor.cc Controller.cc $(CONTR_FOLDER)/input_gen.cc
@@ -48,5 +52,16 @@ CONTR_EXE=C_testbench
 $(CONTR_EXE): $(CONTR_OBJS)
 	$(CC) $(LDFLAGS) $(INCDIR) $(LIBDIR) -o $(CONTR_EXE) $(CONTR_OBJS) $(LIBS)
 
+
+# TrafficSystem_testbench ----------------------
+
+SYS_FOLDER=TrafficSystem_testbench
+SYS_SRCS=$(SYS_FOLDER)/TrafficSystem_testbench.cc $(SYS_FOLDER)/monitor.cc Controller.cc TrafficLight.cc $(SYS_FOLDER)/input_gen.cc
+SYS_OBJS = $(SYS_SRCS:.cc=.o)
+SYS_EXE=sys_testbench
+
+$(SYS_EXE): $(SYS_OBJS)
+	$(CC) $(LDFLAGS) $(INCDIR) $(LIBDIR) -o $(SYS_EXE) $(SYS_OBJS) $(LIBS)
+
 clean:
-	rm -f *.o $(TRAFF_FOLDER)/*.o $(TRAFF_EXE) $(CONTR_FOLDER)/*.o $(CONTR_EXE) $(EXE) *~
+	rm -f *.o $(TRAFF_FOLDER)/*.o $(TRAFF_EXE) $(CONTR_FOLDER)/*.o $(CONTR_EXE) $(SYS_FOLDER)/*.o $(EXE) $(SYS_EXE) *~
