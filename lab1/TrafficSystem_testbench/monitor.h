@@ -7,6 +7,14 @@
 #include <string>
 
 SC_MODULE(Monitor) {
+  sc_time gen_time;
+  sc_time add_time;
+  sc_time current_time;
+  bool N;
+  bool S;
+  bool W;
+  bool E;
+
   sc_in<bool> light_N;
   sc_in<bool> light_S;
   sc_in<bool> light_W;
