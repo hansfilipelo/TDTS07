@@ -46,7 +46,7 @@ int sc_main(int argc, char **argv)
   TrafficLight light_s("South");
   TrafficLight light_w("West");
   TrafficLight light_e("East");
-
+  
   Generator gen("Generator");
   Monitor mon("Monitor");
 

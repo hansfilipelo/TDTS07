@@ -1,11 +1,13 @@
 #include <cassert>
 #include "monitor.h"
 
+using namespace std;
+
 Monitor::Monitor(sc_module_name name)
   : sc_module(name)
 {
   SC_METHOD(monitor_method);
-  sensitive << light_N << light_S << light_W << light_E;
+  sensitive << light_N << light_S << light_W << light_E << e;
 
   gen_time = sc_time(Constants::gen_time, SC_SEC);
   add_time = sc_time(Constants::add_time, SC_SEC);
@@ -13,7 +15,11 @@ Monitor::Monitor(sc_module_name name)
   S = false;
   W = false;
   E = false;
+
+  SC_THREAD(e_thread);
 }
+
+// --------------
 
 void Monitor::monitor_method()
 {
@@ -21,8 +27,8 @@ void Monitor::monitor_method()
 
   assert( !((light_N.read() || light_S.read()) && (light_W.read() || light_E.read())) );
 
-
-  if ( current_time > gen_time ) {
+  if ( current_time >= gen_time )
+  {
     if ( light_N.read() )
     {
       N = true;
@@ -40,10 +46,23 @@ void Monitor::monitor_method()
       E = true;
     }
 
-    if ( current_time > gen_time+add_time-sc_time(2,SC_SEC) )
+    cout << sc_time_stamp().to_string() << ": light_N " << light_N.read() << ", light_S " << light_S.read() \
+    << ", light_W " << light_W.read() << ", light_E " << light_E.read() << endl;
+
+    if ( current_time >= gen_time+add_time-sc_time(1,SC_SEC) )
     {
+      cout << "All events handled: " << (N && S && W && E) << endl;
       assert( N && S && W && E );
     }
   }
+}
 
+// -----------
+
+void Monitor::e_thread()
+{
+  wait(gen_time);
+  e.notify();
+  wait(add_time-sc_time(1,SC_SEC));
+  e.notify();
 }
