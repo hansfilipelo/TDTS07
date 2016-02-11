@@ -59,7 +59,7 @@ int sc_main(int argc, char **argv)
   contr(req_N_sig, req_S_sig, req_W_sig, req_E_sig, ack_NS_sig, ack_WE_sig);
 
   gen(car_N_sig, car_S_sig, car_W_sig, car_E_sig);
-  mon(light_N_sig, light_S_sig, light_W_sig, light_E_sig, car_N_sig, car_S_sig, car_W_sig, car_E_sig);
+  mon(light_N_sig, light_S_sig, light_W_sig, light_E_sig);
 
 
   // Start the simulation.

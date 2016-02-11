@@ -23,20 +23,25 @@ void Monitor::monitor_method()
 
 
   if ( current_time > gen_time ) {
-    if ( light_N.read() ) {
+    if ( light_N.read() )
+    {
       N = true;
     }
-    if ( light_S.read() ) {
+    if ( light_S.read() )
+    {
       S = true;
     }
-    if ( light_W.read() ) {
+    if ( light_W.read() )
+    {
       W = true;
     }
-    if ( light_E.read() ) {
+    if ( light_E.read() )
+    {
       E = true;
     }
 
-    if ( current_time > gen_time+add_time-sc_time(2,SC_SEC) ) {
+    if ( current_time > gen_time+add_time-sc_time(2,SC_SEC) )
+    {
       assert( N && S && W && E );
     }
   }
