@@ -53,12 +53,12 @@ $(CONTR_EXE): $(CONTR_OBJS)
 	$(CC) $(LDFLAGS) $(INCDIR) $(LIBDIR) -o $(CONTR_EXE) $(CONTR_OBJS) $(LIBS)
 
 
-# TrafficSystem_testbench ----------------------
+# system_testbench_random ----------------------
 
-SYS_FOLDER=TrafficSystem_testbench
+SYS_FOLDER=system_testbench_random
 SYS_SRCS=$(SYS_FOLDER)/TrafficSystem_testbench.cc $(SYS_FOLDER)/monitor.cc Controller.cc TrafficLight.cc $(SYS_FOLDER)/input_gen.cc $(SYS_FOLDER)/constants.cc
 SYS_OBJS = $(SYS_SRCS:.cc=.o)
-SYS_EXE=sys_testbench
+SYS_EXE=sys_testbench_random
 
 $(SYS_EXE): $(SYS_OBJS)
 	$(CC) $(LDFLAGS) $(INCDIR) $(LIBDIR) -o $(SYS_EXE) $(SYS_OBJS) $(LIBS)
