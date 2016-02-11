@@ -1,6 +1,7 @@
 #ifndef MONITOR_H
 #define MONITOR_H
 
+#include "constants.h"
 #include <systemc.h>
 
 using std::ofstream;
@@ -18,7 +19,7 @@ SC_MODULE(Monitor) {
 
   SC_HAS_PROCESS(Monitor);
   Monitor(sc_module_name name);
-  
+
   void monitor_thread();
 };
 

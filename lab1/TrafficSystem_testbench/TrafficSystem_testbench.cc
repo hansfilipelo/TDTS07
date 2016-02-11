@@ -10,8 +10,12 @@ int sc_main(int argc, char **argv)
 
   assert(argc == 1);
 
-  sc_set_time_resolution(1,SC_SEC);
-  sc_time sim_time(300, SC_SEC);
+  // Can't run after you've set non-zero time constants
+  // http://workspace.accellera.org/Discussion_Forums/systemc-forum/archive/msg?list_name=systemc-forum&monthdir=201105&msg=msg00001.html
+  sc_set_default_time_unit(1, SC_MS);
+  sc_set_time_resolution(1, SC_MS);
+
+  sc_time sim_time = sc_time(Constants::gen_time + Constants::add_time, SC_SEC);
 
   // Create channels.
   // Incomming cars

@@ -2,6 +2,7 @@
 #define INPUT_GEN_H
 
 #include <systemc.h>
+#include "constants.h"
 #include "../Controller.h"
 
 SC_MODULE(Generator) {
@@ -12,7 +13,7 @@ SC_MODULE(Generator) {
 
   SC_HAS_PROCESS(Generator);
   Generator(sc_module_name name);
-
+  
   void generate_thread();
 };
 

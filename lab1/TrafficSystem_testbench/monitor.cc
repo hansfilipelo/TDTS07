@@ -9,10 +9,7 @@ Monitor::Monitor(sc_module_name name)
 
 void Monitor::monitor_thread()
 {
-  wait(1,SC_SEC);
-  for(;;)
-  {
-    
-    wait(5,SC_SEC);
+  for (;;) {
+    assert( !((light_N.read() || light_S.read()) && (light_W.read() || light_E.read())) );
   }
 }

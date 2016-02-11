@@ -56,7 +56,7 @@ $(CONTR_EXE): $(CONTR_OBJS)
 # TrafficSystem_testbench ----------------------
 
 SYS_FOLDER=TrafficSystem_testbench
-SYS_SRCS=$(SYS_FOLDER)/TrafficSystem_testbench.cc $(SYS_FOLDER)/monitor.cc Controller.cc TrafficLight.cc $(SYS_FOLDER)/input_gen.cc
+SYS_SRCS=$(SYS_FOLDER)/TrafficSystem_testbench.cc $(SYS_FOLDER)/monitor.cc Controller.cc TrafficLight.cc $(SYS_FOLDER)/input_gen.cc $(SYS_FOLDER)/constants.cc
 SYS_OBJS = $(SYS_SRCS:.cc=.o)
 SYS_EXE=sys_testbench
 

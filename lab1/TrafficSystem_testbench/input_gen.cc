@@ -16,11 +16,11 @@ Generator::Generator(sc_module_name name)
 
 void Generator::generate_thread()
 {
-  for (;;) {
+  while ( sc_time_stamp() < sc_time(Constants::gen_time, SC_SEC) ) {
     car_N.write(rand() % 2 == 1);
     car_S.write(rand() % 2 == 1);
     car_W.write(rand() % 2 == 1);
     car_E.write(rand() % 2 == 1);
-    wait(10,SC_SEC);
+    wait(1,SC_SEC);
   }
 }
