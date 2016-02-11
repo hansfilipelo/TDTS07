@@ -3,8 +3,8 @@
 
 #include "constants.h"
 #include <systemc.h>
-
-using std::ofstream;
+#include <iostream>
+#include <string>
 
 SC_MODULE(Monitor) {
   sc_in<bool> light_N;
@@ -20,7 +20,7 @@ SC_MODULE(Monitor) {
   SC_HAS_PROCESS(Monitor);
   Monitor(sc_module_name name);
 
-  void monitor_thread();
+  void monitor_method();
 };
 
 #endif // MONITOR_H

@@ -16,7 +16,9 @@ Generator::Generator(sc_module_name name)
 
 void Generator::generate_thread()
 {
-  while ( sc_time_stamp() < sc_time(Constants::gen_time, SC_SEC) ) {
+  sc_time max_gen_time = sc_time(Constants::gen_time, SC_SEC);
+
+  while ( sc_time_stamp() < max_gen_time ) {
     car_N.write(rand() % 2 == 1);
     car_S.write(rand() % 2 == 1);
     car_W.write(rand() % 2 == 1);

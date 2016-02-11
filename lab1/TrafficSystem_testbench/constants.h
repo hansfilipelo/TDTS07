@@ -4,8 +4,8 @@
 class Constants
 {
 public:
-  static const int gen_time;
-  static const int add_time;
+  static const double gen_time;
+  static const double add_time;
 };
 
 #endif
