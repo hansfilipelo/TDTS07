@@ -9,10 +9,9 @@ SC_MODULE(TrafficLight) {
 
   sc_inout<bool> light;
   sc_out<bool> request;
-  sc_event unhandled_vehicle_change;
 
-  // Members
-  bool unhandled_vehicle;
+  sc_inout<bool> unhandled_vehicle;
+  sc_event unhandled_vehicle_change;
 
   SC_HAS_PROCESS(TrafficLight);
   TrafficLight(sc_module_name name);

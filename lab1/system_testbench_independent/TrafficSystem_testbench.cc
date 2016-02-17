@@ -29,6 +29,12 @@ int sc_main(int argc, char **argv)
   sc_signal<bool> light_W_sig;
   sc_signal<bool> light_E_sig;
 
+  // Internal unhandled_vehicle signal
+  sc_signal<bool> unhandled_vehicle_N_sig;
+  sc_signal<bool> unhandled_vehicle_S_sig;
+  sc_signal<bool> unhandled_vehicle_W_sig;
+  sc_signal<bool> unhandled_vehicle_E_sig;
+
   // Requests from lights to controller
   sc_signal<bool> req_N_sig;
   sc_signal<bool> req_S_sig;
@@ -38,6 +44,10 @@ int sc_main(int argc, char **argv)
   // Acks from controller to lights
   sc_signal<bool> ack_WE_sig;
   sc_signal<bool> ack_NS_sig;
+
+  // Internal controller signals
+  sc_signal<int> current_direction_sig;
+  sc_signal<bool> is_acked_sig;
 
   // Instantiate the modules.
   Controller contr("Controller");
@@ -51,12 +61,12 @@ int sc_main(int argc, char **argv)
   Monitor mon("Monitor");
 
   // Connect the channels to the ports.
-  light_n(ack_NS_sig, car_N_sig, light_N_sig, req_N_sig);
-  light_s(ack_NS_sig, car_S_sig, light_S_sig, req_S_sig);
-  light_w(ack_WE_sig, car_W_sig, light_W_sig, req_W_sig);
-  light_e(ack_WE_sig, car_E_sig, light_E_sig, req_E_sig);
+  light_n(ack_NS_sig, car_N_sig, light_N_sig, req_N_sig, unhandled_vehicle_N_sig);
+  light_s(ack_NS_sig, car_S_sig, light_S_sig, req_S_sig, unhandled_vehicle_S_sig);
+  light_w(ack_WE_sig, car_W_sig, light_W_sig, req_W_sig, unhandled_vehicle_W_sig);
+  light_e(ack_WE_sig, car_E_sig, light_E_sig, req_E_sig, unhandled_vehicle_E_sig);
 
-  contr(req_N_sig, req_S_sig, req_W_sig, req_E_sig, ack_NS_sig, ack_WE_sig);
+  contr(req_N_sig, req_S_sig, req_W_sig, req_E_sig, ack_NS_sig, ack_WE_sig, current_direction_sig, is_acked_sig);
 
   gen(car_N_sig, car_S_sig, car_W_sig, car_E_sig);
   mon(light_N_sig, light_S_sig, light_W_sig, light_E_sig);

@@ -3,11 +3,11 @@
 Controller::Controller(sc_module_name name)
 : sc_module(name)
 {
-  current_direction = 0;
-  is_acked = false;
 
   ack_NS.initialize(false);
   ack_WE.initialize(false);
+  current_direction.initialize(0);
+  is_acked.initialize(false);
 
   SC_METHOD(request_method);
   dont_initialize();
@@ -26,19 +26,19 @@ Controller::Controller(sc_module_name name)
 
 void Controller::request_method()
 {
-  if (!is_acked)
+  if (!is_acked->read())
   {
     if (request_NS.read() || request_SN.read())
     {
-      current_direction = 0;
-      is_acked = true;
-      ack_event.notify();
+      current_direction->write(0);
+      is_acked->write(true);
+      ack_event.notify(SC_ZERO_TIME);
     }
     else if (request_WE.read() || request_EW.read())
     {
-      current_direction = 1;
-      is_acked = true;
-      ack_event.notify();
+      current_direction->write(1);
+      is_acked->write(true);
+      ack_event.notify(SC_ZERO_TIME);
     }
   }
 }
@@ -47,46 +47,46 @@ void Controller::request_method()
 
 void Controller::ack_method()
 {
-  if (current_direction == 0)
+  if (current_direction->read() == 0)
   {
     if(request_WE.read() || request_EW.read())
     {
       ack_NS.write(false);
       ack_WE.write(true);
-      current_direction = 1;
-      timer_event.notify();
+      current_direction->write(1);
+      timer_event.notify(SC_ZERO_TIME);
     }
     else if(request_NS.read() || request_SN.read())
     {
-      timer_event.notify();
+      timer_event.notify(SC_ZERO_TIME);
     }
     else
     {
       ack_NS.write(false);
       ack_WE.write(false);
       ack_event.cancel();
-      is_acked = false;
+      is_acked->write(false);
     }
   }
-  else if (current_direction == 1)
+  else if (current_direction->read() == 1)
   {
     if(request_NS.read() || request_SN.read())
     {
       ack_WE.write(false);
       ack_NS.write(true);
-      current_direction = 0;
-      timer_event.notify();
+      current_direction->write(0);
+      timer_event.notify(SC_ZERO_TIME);
     }
     else if(request_WE.read() || request_EW.read())
     {
-      timer_event.notify();
+      timer_event.notify(SC_ZERO_TIME);
     }
     else
     {
       ack_NS.write(false);
       ack_WE.write(false);
       ack_event.cancel();
-      is_acked = false;
+      is_acked->write(false);
     }
 
   }
