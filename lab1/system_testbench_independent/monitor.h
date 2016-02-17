@@ -17,7 +17,7 @@ SC_MODULE(Monitor) {
 
   SC_HAS_PROCESS(Monitor);
   Monitor(sc_module_name name);
-  
+
   void monitor_method();
 };
 
