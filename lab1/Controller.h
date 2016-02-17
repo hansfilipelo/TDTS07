@@ -3,6 +3,7 @@
 //#define NR_OF_DIRECTIONS 2
 
 #include <systemc.h>
+#include <iostream>
 
 SC_MODULE(Controller) {
 

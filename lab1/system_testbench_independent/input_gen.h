@@ -14,6 +14,7 @@ SC_MODULE(Generator) {
   Generator(sc_module_name name);
 
   void generate_thread();
+  void print_method();
 };
 
 #endif // INPUT_GEN_H

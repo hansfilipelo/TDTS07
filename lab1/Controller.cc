@@ -59,6 +59,8 @@ void Controller::ack_method()
     else if(request_NS.read() || request_SN.read())
     {
       timer_event.notify();
+      ack_WE.write(false);
+      ack_NS.write(true);
     }
     else
     {
@@ -80,6 +82,8 @@ void Controller::ack_method()
     else if(request_WE.read() || request_EW.read())
     {
       timer_event.notify();
+      ack_NS.write(false);
+      ack_WE.write(true);
     }
     else
     {
