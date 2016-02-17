@@ -51,7 +51,7 @@ void Generator::sensor_generate_thread()
   sensor->write(sensor_local);
 
   wait(20, SC_SEC); // At time 60
-  sensor_local = true;
+  sensor_local = false;
   sensor->write(sensor_local);
 
 }

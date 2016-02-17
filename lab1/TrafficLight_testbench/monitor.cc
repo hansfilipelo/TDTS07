@@ -2,17 +2,16 @@
 #include "monitor.h"
 
 Monitor::Monitor(sc_module_name name)
-  : sc_module(name)
+: sc_module(name)
 {
-  SC_THREAD(monitor_thread);
+  SC_METHOD(monitor_method);
+  sensitive << light << request;
 }
 
-void Monitor::monitor_thread()
+void Monitor::monitor_method()
 {
-  wait(1,SC_SEC);
-  for(;;)
-  {
-    printf("Request: %i. Light: %i. \n", (int)request.read(), (int)light.read());
-    wait(5,SC_SEC);
-  }
+
+
+  cout << sc_time_stamp().to_string() << " Request: " << (int)request.read() <<  " Light: " << (int)light.read() << endl;
+
 }
