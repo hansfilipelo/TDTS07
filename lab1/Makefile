@@ -63,5 +63,16 @@ SYS_EXE=sys_testbench_random
 $(SYS_EXE): $(SYS_OBJS)
 	$(CC) $(LDFLAGS) $(INCDIR) $(LIBDIR) -o $(SYS_EXE) $(SYS_OBJS) $(LIBS)
 
+# system_testbench_independent ----------------------
+
+SYS_IND_FOLDER=system_testbench_independent
+SYS_IND_SRCS=$(SYS_IND_FOLDER)/TrafficSystem_testbench.cc $(SYS_IND_FOLDER)/monitor.cc Controller.cc TrafficLight.cc $(SYS_IND_FOLDER)/input_gen.cc
+SYS_IND_OBJS = $(SYS_IND_SRCS:.cc=.o)
+SYS_IND_EXE=sys_testbench_independent
+
+$(SYS_IND_EXE): $(SYS_IND_OBJS)
+	$(CC) $(LDFLAGS) $(INCDIR) $(LIBDIR) -o $(SYS_IND_EXE) $(SYS_IND_OBJS) $(LIBS)
+
+
 clean:
-	rm -f *.o $(TRAFF_FOLDER)/*.o $(TRAFF_EXE) $(CONTR_FOLDER)/*.o $(CONTR_EXE) $(SYS_FOLDER)/*.o $(EXE) $(SYS_EXE) *~
+	rm -f *.o $(TRAFF_FOLDER)/*.o $(TRAFF_EXE) $(CONTR_FOLDER)/*.o $(CONTR_EXE) $(SYS_FOLDER)/*.o $(EXE) $(SYS_EXE) $(SYS_IND_OBJS) $(SYS_IND_EXE) $() *~
