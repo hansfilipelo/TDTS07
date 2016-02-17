@@ -6,6 +6,8 @@ TrafficLight::TrafficLight(sc_module_name name)
   light.initialize(false);
   request.initialize(false);
 
+  unhandled_vehicle = false;
+
   SC_METHOD(sensor_method);
   dont_initialize();
   sensitive << sensor << light;

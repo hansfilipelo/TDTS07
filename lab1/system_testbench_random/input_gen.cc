@@ -25,4 +25,9 @@ void Generator::generate_thread()
     car_E.write(rand() % 2 == 1);
     wait(1,SC_SEC);
   }
+
+  car_N.write(false);
+  car_S.write(false);
+  car_W.write(false);
+  car_E.write(false);
 }

@@ -21,6 +21,18 @@ SC_MODULE(Monitor) {
   sc_in<bool> light_W;
   sc_in<bool> light_E;
 
+  // Requests from lights to controller
+  sc_in<bool> req_N;
+  sc_in<bool> req_S;
+  sc_in<bool> req_W;
+  sc_in<bool> req_E;
+
+  // Requests from lights to controller
+  sc_in<bool> car_N;
+  sc_in<bool> car_S;
+  sc_in<bool> car_W;
+  sc_in<bool> car_E;
+
   sc_event e;
 
   SC_HAS_PROCESS(Monitor);

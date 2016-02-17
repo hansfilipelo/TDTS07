@@ -4,7 +4,7 @@
 using namespace std;
 
 Monitor::Monitor(sc_module_name name)
-  : sc_module(name)
+: sc_module(name)
 {
   SC_METHOD(monitor_method);
   sensitive << light_N << light_S << light_W << light_E << e;
@@ -46,8 +46,18 @@ void Monitor::monitor_method()
       E = true;
     }
 
+    // Show incomming cars
+    cout << sc_time_stamp().to_string() << ": car_N " << car_N.read() << ", car_S " << car_S.read() \
+    << ", car_W " << car_W.read() << ", car_E " << car_E.read() << endl;
+
+    // Show incomming requests
+    cout << sc_time_stamp().to_string() << ": req_N " << req_N.read() << ", req_S " << req_S.read() \
+    << ", req_W " << req_W.read() << ", req_E " << req_E.read() << endl;
+
+    // Show lights
     cout << sc_time_stamp().to_string() << ": light_N " << light_N.read() << ", light_S " << light_S.read() \
     << ", light_W " << light_W.read() << ", light_E " << light_E.read() << endl;
+
 
     if ( current_time >= gen_time+add_time-sc_time(1,SC_SEC) )
     {
