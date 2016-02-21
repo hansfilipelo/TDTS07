@@ -8,6 +8,7 @@ using std::ofstream;
 SC_MODULE(Monitor) {
   sc_in<bool> light;
   sc_in<bool> request;
+  sc_in<bool> ack;
 
   SC_HAS_PROCESS(Monitor);
   Monitor(sc_module_name name);

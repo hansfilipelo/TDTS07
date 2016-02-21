@@ -26,7 +26,7 @@ int sc_main(int argc, char **argv)
   // Connect the channels to the ports.
   t_light(ack_sig, sensor_sig, light_sig, request_sig);
   gen(ack_sig, sensor_sig);
-  mon(light_sig, request_sig);
+  mon(light_sig, request_sig, ack_sig);
 
 
   // Start the simulation.
