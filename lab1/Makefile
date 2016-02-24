@@ -42,6 +42,9 @@ TRAFF_EXE=TL_testbench
 $(TRAFF_EXE): $(TRAFF_OBJS)
 	$(CC) $(LDFLAGS) $(INCDIR) $(LIBDIR) -o $(TRAFF_EXE) $(TRAFF_OBJS) $(LIBS)
 
+.cc.o:
+	$(CC) -c $(CFLAGS) $(INCDIR) $< -o $@
+
 # Controller_testbench ----------------------
 
 CONTR_FOLDER=Controller_testbench
