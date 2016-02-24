@@ -8,10 +8,9 @@ SRCS = TrafficLight.cc Controller.cc
 ## DO NOT CHANGE ANYTHING BELOW ##
 ##################################
 
-SYSTEMC = /home/TDTS07/sw/systemc
-TARGET_ARCH = linux64
+SYSTEMC = /home/TDTS07/sw/systemc/lib-linux64
 
-LIBDIR = -L. -L.. -L$(SYSTEMC)/lib-$(TARGET_ARCH)
+LIBDIR = -L. -L.. -L$(SYSTEMC)
 LIBS = -Wl -Bstatic -lsystemc -Wl -Bdynamic -lm -lpthread
 LDFLAGS = -g
 
@@ -20,7 +19,7 @@ OPT = -O3
 CFLAGS = -Wno-deprecated
 EXE = $(PROGRAM)
 
-INCDIR= -I. -I.. -I$(SYSTEMC)/include
+INCDIR= -I. -I.. -I/home/TDTS07/sw/systemc/include
 
 OBJS = $(SRCS:.cc=.o)
 
