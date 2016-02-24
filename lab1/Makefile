@@ -8,9 +8,10 @@ SRCS = TrafficLight.cc Controller.cc
 ## DO NOT CHANGE ANYTHING BELOW ##
 ##################################
 
-SYSTEMC = /usr/local/Cellar/systemc/2.3.1/
+SYSTEMC = /home/TDTS07/sw/systemc
+TARGET_ARCH = linux64
 
-LIBDIR = -L. -L.. -L$(SYSTEMC)/lib
+LIBDIR = -L. -L.. -L$(SYSTEMC)/lib-$(TARGET_ARCH)
 LIBS = -Wl -Bstatic -lsystemc -Wl -Bdynamic -lm -lpthread
 LDFLAGS = -g
 
