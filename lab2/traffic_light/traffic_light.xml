@@ -6,6 +6,8 @@
 bool request[2][2] = {{false, false}, {false, false}};
 bool ack[2] = {false, false};
 chan s_on[4];
+broadcast chan ack_on[2];
+broadcast chan ack_off[2];
 
 int floor_div(int num, int denom)
 {
@@ -20,7 +22,6 @@ bool light = false;
 </declaration>
 		<location id="id0" x="-791" y="-366">
 			<name x="-808" y="-357">green</name>
-			<label kind="invariant" x="-867" y="-340">ack[floor_div(id,2)]</label>
 		</location>
 		<location id="id1" x="-527" y="-518">
 			<name x="-537" y="-552">unhandled_vehicle</name>
@@ -31,23 +32,16 @@ bool light = false;
 		<init ref="id2"/>
 		<transition>
 			<source ref="id0"/>
-			<target ref="id1"/>
-			<label kind="guard" x="-731" y="-366">not ack[floor_div(id,2)]</label>
-			<label kind="assignment" x="-731" y="-349">request[floor_div(id,2)][id%2] = 1</label>
-			<nail x="-527" y="-366"/>
-		</transition>
-		<transition>
-			<source ref="id0"/>
 			<target ref="id2"/>
-			<label kind="guard" x="-1113" y="-433">(not ack[floor_div(id,2)])</label>
-			<label kind="assignment" x="-1113" y="-416">request[floor_div(id,2)][id%2] = 0,
-light = 0</label>
+			<label kind="synchronisation" x="-1113" y="-442">ack_off[floor_div(id,2)]?</label>
+			<label kind="assignment" x="-1113" y="-425">light = 0</label>
 		</transition>
 		<transition>
 			<source ref="id1"/>
 			<target ref="id0"/>
-			<label kind="guard" x="-867" y="-493">ack[floor_div(id,2)]</label>
-			<label kind="assignment" x="-867" y="-476">light = 1,
+			<label kind="guard" x="-688" y="-425">ack[floor_div(id,2)]</label>
+			<label kind="synchronisation" x="-688" y="-374">ack_on[floor_div(id,2)]?</label>
+			<label kind="assignment" x="-688" y="-408">light = 1,
 request[floor_div(id,2)][id%2] = 0</label>
 		</transition>
 		<transition>
@@ -83,21 +77,37 @@ request[floor_div(id,2)][id%2] = 0</label>
 		<name>Controller</name>
 		<declaration>const int time_limit = 20;
 clock time;</declaration>
-		<location id="id5" x="-476" y="25">
+		<location id="id5" x="-331" y="93">
+			<label kind="invariant" x="-341" y="110">time &lt; 1</label>
+		</location>
+		<location id="id6" x="-17" y="-34">
+			<label kind="invariant" x="-68" y="-68">time &lt; 1</label>
+		</location>
+		<location id="id7" x="-476" y="25">
 			<name x="-527" y="-8">AckNS</name>
-			<label kind="invariant" x="-612" y="8">time &lt; time_limit</label>
 		</location>
-		<location id="id6" x="136" y="25">
+		<location id="id8" x="136" y="25">
 			<name x="144" y="-8">AckWE</name>
-			<label kind="invariant" x="153" y="8">time &lt; time_limit</label>
 		</location>
-		<location id="id7" x="-178" y="-221">
+		<location id="id9" x="-178" y="-221">
 			<name x="-188" y="-255">NoAck</name>
 		</location>
-		<init ref="id7"/>
+		<init ref="id9"/>
 		<transition>
 			<source ref="id5"/>
-			<target ref="id5"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-459" y="68">ack_on[0]!</label>
+			<label kind="assignment" x="-459" y="85">time = 0</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-8" y="8">ack_on[1]!</label>
+			<label kind="assignment" x="-8" y="-8">time = 0</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id7"/>
 			<label kind="guard" x="-697" y="59">(request[0][0] or 
 request[0][1]) and
 not (request[1][0] or 
@@ -108,8 +118,8 @@ time &gt;= time_limit</label>
 			<nail x="-476" y="153"/>
 		</transition>
 		<transition>
-			<source ref="id6"/>
-			<target ref="id6"/>
+			<source ref="id8"/>
+			<target ref="id8"/>
 			<label kind="guard" x="238" y="68">(request[1][0] or 
 request[1][1]) and
 not (request[0][0] or 
@@ -120,63 +130,69 @@ time &gt;= time_limit</label>
 			<nail x="136" y="161"/>
 		</transition>
 		<transition>
-			<source ref="id6"/>
-			<target ref="id7"/>
+			<source ref="id8"/>
+			<target ref="id9"/>
 			<label kind="guard" x="153" y="-221">(not (request[0][0] or 
 request[0][1] or
 request[1][0] or 
 request[1][1])) and
 time &gt;= time_limit</label>
+			<label kind="synchronisation" x="153" y="-119">ack_off[1]!</label>
 			<label kind="assignment" x="153" y="-136">ack[1] = false</label>
 			<nail x="136" y="-221"/>
 		</transition>
 		<transition>
-			<source ref="id5"/>
-			<target ref="id7"/>
+			<source ref="id7"/>
+			<target ref="id9"/>
 			<label kind="guard" x="-629" y="-221">(not (request[0][0] or
 request[0][1] or
 request[1][0] or
 request[1][1])) and
 time &gt;= time_limit</label>
+			<label kind="synchronisation" x="-629" y="-119">ack_off[0]!</label>
 			<label kind="assignment" x="-629" y="-136">ack[0] = false</label>
 			<nail x="-476" y="0"/>
 			<nail x="-476" y="-221"/>
 		</transition>
 		<transition>
-			<source ref="id6"/>
+			<source ref="id8"/>
 			<target ref="id5"/>
-			<label kind="guard" x="-246" y="102">(request[0][0] or 
+			<label kind="guard" x="-246" y="119">(request[0][0] or 
 request[0][1]) and
 time &gt;= time_limit</label>
-			<label kind="assignment" x="-246" y="153">ack[1] = false,
+			<label kind="synchronisation" x="-246" y="102">ack_off[1]!</label>
+			<label kind="assignment" x="-246" y="170">ack[1] = false,
 ack[0] = true,
 time = 0</label>
 			<nail x="-187" y="93"/>
 		</transition>
 		<transition>
-			<source ref="id5"/>
+			<source ref="id7"/>
 			<target ref="id6"/>
 			<label kind="guard" x="-246" y="-136">(request[1][0] or 
 request[1][1]) and
 time &gt;= time_limit</label>
+			<label kind="synchronisation" x="-246" y="-153">ack_off[0]!</label>
 			<label kind="assignment" x="-246" y="-85">ack[0] = false,
 ack[1] = true,
 time = 0</label>
 			<nail x="-187" y="-34"/>
 		</transition>
 		<transition>
-			<source ref="id7"/>
-			<target ref="id5"/>
+			<source ref="id9"/>
+			<target ref="id7"/>
 			<label kind="guard" x="-399" y="-187">request[0][0] or 
 request[0][1]</label>
+			<label kind="synchronisation" x="-399" y="-204">ack_on[0]!</label>
 			<label kind="assignment" x="-399" y="-153">ack[0] = true,
 time = 0</label>
 		</transition>
 		<transition>
-			<source ref="id7"/>
-			<target ref="id6"/>
+			<source ref="id9"/>
+			<target ref="id8"/>
 			<label kind="guard" x="-42" y="-187">request[1][0] or 
 request[1][1]</label>
+			<label kind="synchronisation" x="-42" y="-204">ack_on[1]!</label>
 			<label kind="assignment" x="-42" y="-153">ack[1] = true,
 time = 0</label>
 		</transition>
@@ -195,7 +211,14 @@ system TL0, TL1, TL2, TL3, Controller, S0, S1, S2, S3;
     </system>
 	<queries>
 		<query>
+			<formula>A[] not ((TL0.green or TL1.green) and (TL2.green or TL3.green))
+			</formula>
+			<comment>
+			</comment>
+		</query>
+		<query>
 			<formula>A[] not deadlock
+
 			</formula>
 			<comment>
 			</comment>
