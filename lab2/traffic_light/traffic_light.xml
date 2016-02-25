@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+
+bool request[2][2] = {{false, false}, {false, false}};
+bool ack[2] = {false, false};
+chan s_on[4];
+
+int floor_div(int num, int denom)
+{
+    return num/denom;
+}</declaration>
+	<template>
+		<name x="5" y="5">TL</name>
+		<parameter>const int id</parameter>
+		<declaration>// Place local declarations here.
+bool light = false;
+
+</declaration>
+		<location id="id0" x="-757" y="8">
+			<name x="-774" y="17">green</name>
+			<label kind="invariant" x="-833" y="34">ack[floor_div(id,2)]</label>
+		</location>
+		<location id="id1" x="-493" y="-144">
+			<name x="-503" y="-178">unhandled_vehicle</name>
+		</location>
+		<location id="id2" x="-1037" y="-136">
+			<name x="-1047" y="-170">wait</name>
+		</location>
+		<init ref="id2"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-697" y="8">not ack[floor_div(id,2)]</label>
+			<label kind="assignment" x="-697" y="25">request[floor_div(id,2)][id%2] = 1</label>
+			<nail x="-493" y="8"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-1079" y="-59">(not ack[floor_div(id,2)])</label>
+			<label kind="assignment" x="-1079" y="-42">request[floor_div(id,2)][id%2] = 0</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="-833" y="-119">ack[floor_div(id,2)]</label>
+			<label kind="assignment" x="-833" y="-102">light = 0,
+request[floor_div(id,2)][id%2] = 0</label>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-943" y="-161">s_on[id]?</label>
+			<label kind="assignment" x="-807" y="-161">request[floor_div(id,2)][id%2] = 1</label>
+		</transition>
+	</template>
+	<template>
+		<name>Sensor</name>
+		<parameter>const int id</parameter>
+		<location id="id3" x="-2618" y="-2176">
+			<name x="-2643" y="-2219">SensorOn</name>
+		</location>
+		<location id="id4" x="-2754" y="-2176">
+			<name x="-2788" y="-2210">SensorOff</name>
+		</location>
+		<init ref="id4"/>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id4"/>
+			<nail x="-2686" y="-2142"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-2720" y="-2235">s_on[id]!</label>
+			<nail x="-2686" y="-2210"/>
+		</transition>
+	</template>
+	<template>
+		<name>Controller</name>
+		<declaration>const int time_limit = 20;
+clock time;</declaration>
+		<location id="id5" x="-476" y="25">
+			<name x="-527" y="-8">AckNS</name>
+			<label kind="invariant" x="-612" y="8">time &lt; time_limit</label>
+		</location>
+		<location id="id6" x="136" y="25">
+			<name x="126" y="-9">AckWE</name>
+			<label kind="invariant" x="153" y="8">time &lt; time_limit</label>
+		</location>
+		<location id="id7" x="-178" y="-221">
+			<name x="-188" y="-255">NoAck</name>
+		</location>
+		<init ref="id7"/>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id5"/>
+			<label kind="guard" x="-697" y="59">(request[0][0] or 
+request[0][1]) and
+not (request[1][0] or 
+request[1][1]) and
+time == time_limit</label>
+			<label kind="assignment" x="-697" y="144">time = 0</label>
+			<nail x="-612" y="25"/>
+			<nail x="-476" y="153"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id6"/>
+			<label kind="guard" x="238" y="68">(request[1][0] or 
+request[1][1]) and
+not (request[0][0] or 
+request[0][1]) and
+time == time_limit</label>
+			<label kind="assignment" x="238" y="153">time = 0</label>
+			<nail x="280" y="25"/>
+			<nail x="136" y="161"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<label kind="guard" x="153" y="-221">not (request[0][0] or 
+request[0][1] or
+request[1][0] or 
+request[1][1])</label>
+			<label kind="assignment" x="153" y="-153">ack[1] = false</label>
+			<nail x="136" y="-221"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-629" y="-221">not (request[0][0] or
+request[0][1] or
+request[1][0] or
+request[1][1])</label>
+			<label kind="assignment" x="-629" y="-153">ack[0] = false</label>
+			<nail x="-476" y="0"/>
+			<nail x="-476" y="-221"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id5"/>
+			<label kind="guard" x="-246" y="102">(request[0][0] or 
+request[0][1]) and
+time == time_limit</label>
+			<label kind="assignment" x="-246" y="153">ack[1] = false,
+ack[0] = true,
+time = 0</label>
+			<nail x="-187" y="93"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id6"/>
+			<label kind="guard" x="-246" y="-136">(request[1][0] or 
+request[1][1]) and
+time == time_limit</label>
+			<label kind="assignment" x="-246" y="-85">ack[0] = false,
+ack[1] = true,
+time = 0</label>
+			<nail x="-187" y="-34"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id5"/>
+			<label kind="guard" x="-399" y="-187">request[0][0] or 
+request[0][1]</label>
+			<label kind="assignment" x="-399" y="-153">ack[0] = true,
+time = 0</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id6"/>
+			<label kind="guard" x="-42" y="-187">request[1][0] or 
+request[1][1]</label>
+			<label kind="assignment" x="-42" y="-153">ack[1] = true,
+time = 0</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+TL0 = TL(0);
+TL1 = TL(1);
+TL2 = TL(2);
+TL3 = TL(3);
+S0 = Sensor(0);
+S1 = Sensor(1);
+S2 = Sensor(2);
+S3 = Sensor(3);
+// List one or more processes to be composed into a system.
+system TL0, TL1, TL2, TL3, Controller, S0, S1, S2, S3;
+    </system>
+	<queries>
+		<query>
+			<formula>A[] not deadlock
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>
