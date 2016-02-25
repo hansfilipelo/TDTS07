@@ -13,75 +13,75 @@ chan sens[4];
 clock t;
 int t_lim = 20;
 bool light = false;</declaration>
-		<location id="id0" x="-374" y="153">
-			<label kind="invariant" x="-384" y="170">t &lt;= 1</label>
+		<location id="id0" x="-646" y="9">
+			<label kind="invariant" x="-656" y="26">t &lt;= 1</label>
 		</location>
-		<location id="id1" x="17" y="25">
-			<name x="-34" y="42">unhandled_vehicle2</name>
+		<location id="id1" x="-331" y="-119">
+			<name x="-382" y="-102">unhandled_vehicle2</name>
 			<committed/>
 		</location>
-		<location id="id2" x="17" y="-136">
-			<name x="7" y="-170">green</name>
-			<label kind="invariant" x="34" y="-119">t &lt; t_lim + 1</label>
+		<location id="id2" x="-331" y="-280">
+			<name x="-341" y="-314">green</name>
+			<label kind="invariant" x="-314" y="-263">t &lt; t_lim + 1</label>
 		</location>
-		<location id="id3" x="-195" y="25">
-			<name x="-204" y="42">acked</name>
-			<label kind="invariant" x="-195" y="-8">t &lt; t_lim + 1</label>
+		<location id="id3" x="-501" y="-119">
+			<name x="-510" y="-102">acked</name>
+			<label kind="invariant" x="-501" y="-152">t &lt; t_lim + 1</label>
 		</location>
-		<location id="id4" x="-195" y="-136">
-			<name x="-238" y="-170">unhandled_vehicle1</name>
+		<location id="id4" x="-501" y="-280">
+			<name x="-544" y="-314">unhandled_vehicle1</name>
 		</location>
-		<location id="id5" x="-374" y="-59">
-			<name x="-384" y="-93">start</name>
+		<location id="id5" x="-646" y="-203">
+			<name x="-656" y="-237">start</name>
 		</location>
 		<init ref="id5"/>
 		<transition>
 			<source ref="id0"/>
 			<target ref="id5"/>
-			<label kind="guard" x="-416" y="51">t &gt; 0</label>
-			<label kind="synchronisation" x="-425" y="34">fin[id]!</label>
+			<label kind="guard" x="-697" y="-93">t &gt; 0</label>
+			<label kind="synchronisation" x="-697" y="-110">fin[id]!</label>
 		</transition>
 		<transition>
 			<source ref="id2"/>
 			<target ref="id0"/>
-			<label kind="guard" x="161" y="-127">t &gt;= t_lim</label>
-			<label kind="assignment" x="161" y="-110">t = 0</label>
-			<nail x="144" y="-136"/>
-			<nail x="144" y="153"/>
+			<label kind="guard" x="-204" y="-271">t &gt;= t_lim</label>
+			<label kind="assignment" x="-204" y="-254">t = 0</label>
+			<nail x="-221" y="-280"/>
+			<nail x="-221" y="9"/>
 		</transition>
 		<transition>
 			<source ref="id3"/>
 			<target ref="id0"/>
-			<label kind="guard" x="-272" y="76">t &gt;= t_lim</label>
-			<label kind="assignment" x="-272" y="93">t = 0</label>
+			<label kind="guard" x="-561" y="-68">t &gt;= t_lim</label>
+			<label kind="assignment" x="-561" y="-51">t = 0</label>
 		</transition>
 		<transition>
 			<source ref="id1"/>
 			<target ref="id2"/>
-			<label kind="assignment" x="25" y="-59">light = true</label>
+			<label kind="assignment" x="-323" y="-203">light = true</label>
 		</transition>
 		<transition>
 			<source ref="id3"/>
 			<target ref="id1"/>
-			<label kind="synchronisation" x="-136" y="25">sens[id]?</label>
+			<label kind="synchronisation" x="-442" y="-119">sens[id]?</label>
 		</transition>
 		<transition>
 			<source ref="id4"/>
 			<target ref="id2"/>
-			<label kind="synchronisation" x="-127" y="-136">ack[id]?</label>
-			<label kind="assignment" x="-127" y="-119">light = true,
+			<label kind="synchronisation" x="-433" y="-280">ack[id]?</label>
+			<label kind="assignment" x="-433" y="-263">light = true,
 t = 0</label>
 		</transition>
 		<transition>
 			<source ref="id5"/>
 			<target ref="id3"/>
-			<label kind="synchronisation" x="-323" y="-8">ack[id]?</label>
-			<label kind="assignment" x="-323" y="8">t = 0</label>
+			<label kind="synchronisation" x="-629" y="-152">ack[id]?</label>
+			<label kind="assignment" x="-629" y="-136">t = 0</label>
 		</transition>
 		<transition>
 			<source ref="id5"/>
 			<target ref="id4"/>
-			<label kind="synchronisation" x="-323" y="-127">sens[id]?</label>
+			<label kind="synchronisation" x="-629" y="-271">sens[id]?</label>
 		</transition>
 	</template>
 	<template>
@@ -208,6 +208,18 @@ system TL0, TL1, TL2, TL3, S0, S1, S2, S3, Controller;
 		</query>
 		<query>
 			<formula>TL0.unhandled_vehicle2 --&gt; TL0.green
+			</formula>
+			<comment>
+			</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; TL0.green and TL1.green
+			</formula>
+			<comment>
+			</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; TL0.green and (not TL1.green)
 			</formula>
 			<comment>
 			</comment>
