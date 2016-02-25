@@ -17,7 +17,7 @@ A[] not ( ( P1.cs and ( P2.cs or P3.cs or P4.cs or P5.cs or P6.cs or P7.cs or P8
           ( P7.cs and ( P8.cs or P9.cs or P10.cs or P11.cs ) ) or \
           ( P8.cs and ( P9.cs or P10.cs or P11.cs ) ) or \
           ( P9.cs and ( P10.cs or P11.cs ) ) or \
-          ( P10.cs and P11.cs ) 
+          ( P10.cs and P11.cs ) \
         )
 
 /*
