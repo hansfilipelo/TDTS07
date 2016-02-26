@@ -8,25 +8,4 @@ A[] not deadlock
 /*
 
 */
-E<> Receiver.recv0
-
-/*
-
-*/
-
-Sender.wait0 --> (Sender.send0 or Sender.send1)
-
-/*
-
-*/
-Sender.send0 --> Link.m0
-
-/*
-
-*/
-Link.m0 --> (Link.m0a or Link.wait)
-
-/*
-
-*/
-Link.m0a -->Receiver.recv0
+A<> Sender.wait0 imply Receiver.recv0
