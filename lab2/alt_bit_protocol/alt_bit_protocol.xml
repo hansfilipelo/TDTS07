@@ -6,7 +6,10 @@
 chan s0, s1, sack0, sack1; 
 chan r0, r1, rack0, rack1;
 
-const int timeout = 5;</declaration>
+const int timeout = 5;
+
+bool lost_message = false;
+bool lost_ack = false;</declaration>
 	<template>
 		<name x="5" y="5">Sender</name>
 		<declaration>// Place local declarations here.
@@ -18,7 +21,6 @@ clock t;
 		</location>
 		<location id="id1" x="-3034" y="-1037">
 			<name x="-3053" y="-1071">send0</name>
-			<committed/>
 		</location>
 		<location id="id2" x="-2664" y="-867">
 			<name x="-2698" y="-850">wait1</name>
@@ -26,7 +28,6 @@ clock t;
 		</location>
 		<location id="id3" x="-2662" y="-1037">
 			<name x="-2681" y="-1071">send1</name>
-			<committed/>
 		</location>
 		<init ref="id1"/>
 		<transition>
@@ -103,6 +104,7 @@ clock t;
 		<transition>
 			<source ref="id7"/>
 			<target ref="id8"/>
+			<label kind="assignment" x="-1428" y="-476">lost_ack = true</label>
 		</transition>
 		<transition>
 			<source ref="id7"/>
@@ -113,6 +115,7 @@ clock t;
 		<transition>
 			<source ref="id4"/>
 			<target ref="id8"/>
+			<label kind="assignment" x="-1377" y="-442">lost_ack = true</label>
 		</transition>
 		<transition>
 			<source ref="id4"/>
@@ -129,6 +132,7 @@ clock t;
 		<transition>
 			<source ref="id5"/>
 			<target ref="id8"/>
+			<label kind="assignment" x="-1147" y="-603">lost_message = true</label>
 		</transition>
 		<transition>
 			<source ref="id6"/>
@@ -139,6 +143,7 @@ clock t;
 		<transition>
 			<source ref="id6"/>
 			<target ref="id8"/>
+			<label kind="assignment" x="-1147" y="-637">lost_message = true</label>
 			<nail x="-1190" y="-663"/>
 		</transition>
 		<transition>
@@ -175,7 +180,6 @@ clock t;
 		</location>
 		<location id="id10" x="-3614" y="-1224">
 			<name x="-3648" y="-1207">recv1</name>
-			<committed/>
 		</location>
 		<location id="id11" x="-3247" y="-1394">
 			<name x="-3255" y="-1445">wait1</name>
@@ -183,7 +187,6 @@ clock t;
 		</location>
 		<location id="id12" x="-3249" y="-1224">
 			<name x="-3283" y="-1207">recv0</name>
-			<committed/>
 		</location>
 		<init ref="id9"/>
 		<transition>
@@ -238,15 +241,29 @@ system Sender, Link, Receiver;
     </system>
 	<queries>
 		<query>
-			<formula>A&lt;&gt; Sender.wait0 imply Receiver.recv0
+			<formula>A[] not deadlock
 			</formula>
-			<comment>
+			<comment>The system can not deadlock.
 			</comment>
 		</query>
 		<query>
-			<formula>A[] not deadlock
+			<formula>A&lt;&gt; Sender.wait0 imply Receiver.recv0
 			</formula>
-			<comment>
+			<comment>Messages sent by the sender are eventually received by the receiver \
+(sender is in wait0 after it has sent an message and receiver reaches recv0 when it has received the message)
+			</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Sender.wait1
+			</formula>
+			<comment>The receiver might send an acknowledgment \
+(the sender can't be in wait1 if it has never received an ack)
+			</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; (lost_message == true and lost_ack == true)
+			</formula>
+			<comment>The channel is lossy
 			</comment>
 		</query>
 	</queries>
