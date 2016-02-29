@@ -1,32 +1,23 @@
 //This file was generated from (Academic) UPPAAL 4.0.13 (rev. 4577), September 2010
 
 /*
-
+The system can not deadlock.
 */
 A[] not deadlock
 
 /*
-
+Messages sent by the sender are eventually received by the receiver \
+(sender is in wait0 after it has sent an message and receiver reaches recv0 when it has received the message)
 */
-E<> Receiver.recv0
+A<> Sender.wait0 imply Receiver.recv0
 
 /*
-
+The receiver might send an acknowledgment \
+(the sender can't be in wait1 if it has never received an ack)
 */
-
-Sender.wait0 --> (Sender.send0 or Sender.send1)
+E<> Sender.wait1
 
 /*
-
+The channel is lossy
 */
-Sender.send0 --> Link.m0
-
-/*
-
-*/
-Link.m0 --> (Link.m0a or Link.wait)
-
-/*
-
-*/
-Link.m0a -->Receiver.recv0
+E<> (lost_message == true and lost_ack == true)
