@@ -1,0 +1,21 @@
+SHARED
+--------------------------
+BUS_BUSY (cycles)  BUS_TRANS (cycles)  TIME (ns)  ENERGY (pJ)       FREQ_0 (MHz)    FREQ_1 (MHz)    FREQ_2 (MHz)
+925438             333968              14123450   894585224         200             200             200
+928021             334685              14092575   768918747         200             100             200
+986636             348267              26231540   819394475         100             200             100
+
+200 100 200
+Elapsed time - processor 0 critical section: 0:15 minutes
+Elapsed time - processor 1 critical section: 0:12 minutes
+Elapsed time - processor 2 critical section: 0:15 minutes
+
+200 200 200
+Elapsed time - processor 0 critical section: 0:13 minutes
+Elapsed time - processor 1 critical section: 0:09 minutes
+Elapsed time - processor 2 critical section: 0:13 minutes
+
+QUEUES
+--------------------------
+BUS_BUSY (cycles)  BUS_TRANS (cycles)  TIME (ns)  ENERGY (pJ)       FREQ (MHz)
+743055             272505              9979355    605463650         200
