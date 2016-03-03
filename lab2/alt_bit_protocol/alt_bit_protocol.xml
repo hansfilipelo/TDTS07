@@ -32,6 +32,30 @@ clock t;
 		<init ref="id1"/>
 		<transition>
 			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-2703" y="-960">r1?</label>
+			<nail x="-2694" y="-952"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-2643" y="-960">r0?</label>
+			<nail x="-2643" y="-952"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-3068" y="-952">r1?</label>
+			<nail x="-3060" y="-952"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-3017" y="-960">r0?</label>
+			<nail x="-3009" y="-952"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
 			<target ref="id1"/>
 			<label kind="synchronisation" x="-2788" y="-901">rack1?</label>
 		</transition>
@@ -43,7 +67,7 @@ clock t;
 		<transition>
 			<source ref="id0"/>
 			<target ref="id1"/>
-			<label kind="synchronisation" x="-3085" y="-969">rack1?</label>
+			<label kind="synchronisation" x="-3060" y="-969">rack1?</label>
 		</transition>
 		<transition>
 			<source ref="id0"/>
@@ -61,7 +85,7 @@ clock t;
 		<transition>
 			<source ref="id2"/>
 			<target ref="id3"/>
-			<label kind="synchronisation" x="-2711" y="-960">rack0?</label>
+			<label kind="synchronisation" x="-2686" y="-960">rack0?</label>
 		</transition>
 		<transition>
 			<source ref="id2"/>
@@ -213,6 +237,30 @@ clock t;
 			<name x="-3283" y="-1207">recv0</name>
 		</location>
 		<init ref="id10"/>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="-3298" y="-1317">rack1?</label>
+			<nail x="-3272" y="-1300"/>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="-3238" y="-1317">rack0?</label>
+			<nail x="-3221" y="-1309"/>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id11"/>
+			<label kind="synchronisation" x="-3612" y="-1300">rack1?</label>
+			<nail x="-3595" y="-1300"/>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id11"/>
+			<label kind="synchronisation" x="-3655" y="-1309">rack0?</label>
+			<nail x="-3629" y="-1300"/>
+		</transition>
 		<transition>
 			<source ref="id13"/>
 			<target ref="id12"/>
